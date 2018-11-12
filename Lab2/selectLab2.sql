@@ -16,7 +16,15 @@ order by Orders.OrderDate desc;
 
 -- 1.в
 
-select Orders.OrderID, Orders.OrderDate, Orders.ShippedDate, DATEDIFF(day, Orders.OrderDate, Orders.ShippedDate) as deliveryTime, Customers.CompanyName, Customers.Country
+select Orders.OrderID, Orders.OrderDate, Orders.ShippedDate,
+       DATEDIFF(day, Orders.OrderDate, Orders.ShippedDate) as deliveryTime, Customers.CompanyName,
+       (select count(*) from Orders where Customers.CustomerID = Orders.CustomerID) as ordersCount, Customers.Country
 from Orders, Customers
 where  (Orders.ShippedDate is not null and Orders.OrderDate between '19970801' and '19970830') or Customers.Country IN ('Germany')
 order by Orders.OrderDate desc;
+
+-- 1.г
+
+select Orders.OrderID, Orders.OrderDate, Customers.CompanyName, Customers.Country from Orders
+left join Customers on Orders.CustomerID = Customers.CustomerID
+where Customers.Country like 'U%';
