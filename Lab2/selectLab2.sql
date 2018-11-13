@@ -28,3 +28,9 @@ order by Orders.OrderDate desc;
 select Orders.OrderID, Orders.OrderDate, Customers.CompanyName, Customers.Country from Orders
 left join Customers on Orders.CustomerID = Customers.CustomerID
 where Customers.Country like 'U%';
+
+-- 1.д
+
+select Categories.CategoryName ,count(Products.CategoryID) as categoryCount, avg(Products.UnitPrice) as middlePrice from Categories, Products
+where Products.CategoryID = Categories.CategoryID
+group by Categories.CategoryName;
