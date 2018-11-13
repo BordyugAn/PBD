@@ -9,3 +9,6 @@ create procedure getPauyers
   sp_help players;
 
   sp_help Teams;
+
+  sp_helptext PlayersTeams;
+

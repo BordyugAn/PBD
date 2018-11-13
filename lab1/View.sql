@@ -8,6 +8,7 @@ from players inner join Teams on players.team = Teams.id;
 
 select * from PlayersTeams;
 
+update PlayersTeams set team = 'Ювентус' where name = 'Криштиану';
 
 drop view PlayersTeams;
 
@@ -50,6 +51,8 @@ select Teams.name, Teams.stadium, Teams.yearFoundation
 from Teams;
 
 select * from view2;
+
+sp_helptext view2;
 
 drop view view2;
 
