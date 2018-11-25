@@ -54,3 +54,86 @@ select Suppliers.CompanyName, Categories.CategoryName, count(*) as count
 from Categories, Suppliers, Products
 where Suppliers.SupplierID = Products.SupplierID and Categories.CategoryID = Products.CategoryID
 group by cube (Suppliers.CompanyName, Categories.CategoryName);
+
+-- 1.ж
+
+select Products.ProductName, Categories.CategoryName
+from Products, Categories
+except
+select Products.ProductName, Categories.CategoryName
+from Products, Categories where Products.CategoryID = Categories.CategoryID;
+
+-- 1.з
+
+select Customers.CompanyName, Orders.OrderDate, Orders.Freight
+from Customers inner join Orders on Customers.CustomerID = Orders.CustomerID
+where Orders.Freight < (select avg(Orders.Freight) from Orders)
+order by Orders.Freight;
+
+-- 1.и
+
+select Products.ProductName, Categories.CategoryName
+from Products inner join Categories on Products.CategoryID = Categories.CategoryID
+where exists (select Categories.CategoryName
+from Categories where Categories.CategoryName = 'Seafood');
+
+-- 1.к
+
+create table Categories_0(
+  CategoryID int primary key,
+  CategoryName nvarchar(15) unique not null ,
+  Description ntext,
+  Picture image
+);
+
+insert into Categories_0 select * from Categories;
+select * from Categories;
+select * from Categories_0;
+
+update Categories_0 set Categories_0.CategoryName = 'Beverages_0' where Categories_0.CategoryName = 'Beverages';
+update Categories_0 set Categories_0.CategoryName = 'Condiments_0' where Categories_0.CategoryName = 'Condiments';
+update Categories_0 set Categories_0.CategoryName = 'Seafood_0' where Categories_0.CategoryName = 'Seafood';
+
+select Categories.CategoryID, Categories.CategoryName
+from Categories
+union
+select Categories_0.CategoryID, Categories_0.CategoryName
+from Categories_0;
+
+-- drop table Categories_0;
+
+-- 2.1
+
+select Products.UnitsInStock from Products where Products.UnitsInStock > CAST(24 As int);
+
+-- 2.2
+
+select Products.UnitsInStock from Products where Products.UnitsInStock > CONVERT(int, 24);
+
+-- 2.3
+
+select Orders.OrderDate from Orders where Orders.OrderDate = CONVERT(datetime, '19970212');
+
+-- 2.4
+
+select Orders.OrderDate from Orders where month(Orders.OrderDate) = month(getdate());
+
+-- 2.5
+
+select Products.UnitPrice, SQUARE(Products.UnitPrice) As Kvadrat from Products;
+
+-- 2.6
+
+select Products.UnitPrice from Products where Products.UnitPrice < ABS(-50);
+
+-- 2.7
+
+select ROUND([Order Details].Discount, 1) from [Order Details] where [Order Details].Discount != 0;
+
+-- 2.8
+
+select [Order Details].Discount, [Order Details].Discount*RAND() from [Order Details] where [Order Details].Discount != 0;
+
+-- 2.9
+
+Select Categories.CategoryName, upper(Categories.CategoryName) from Categories;
